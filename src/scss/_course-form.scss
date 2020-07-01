@@ -1,0 +1,84 @@
+.modal
+{
+    color: red;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    height: 50vh;
+    font-weight: 100;
+    font-size: 30px;
+    text-align: center;
+    color: black;
+}
+
+.Header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    background-color: $color-2;
+}
+
+.exit-btn
+{
+    margin-right: 1rem;
+}
+
+.Header-title
+{
+    margin-left: 8.5rem;
+    margin-top: 1rem;
+}
+
+.input-text
+{
+    outline: none;
+    border: none;
+    background: none;
+    color: rgb(70, 70, 70);
+
+    border-bottom: 1px black solid;
+    font-weight: 100;
+    width: 50%;
+    padding: .25rem;
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 20px;
+}
+
+.CourseForm label
+{
+    font-size: 20px;
+    color: black;
+    font-weight: 300;
+}
+
+.CourseForm-checkbox
+{
+    display: flex;
+}
+
+.checkbox
+{
+    margin: 1rem;
+}
+
+.checkbox label
+{
+    font-size: 15px;
+}
+
+.checkbox-title
+{
+    margin-top: 1rem;
+    font-size: 20px;
+    color: black;
+    font-weight: 300;
+}
+

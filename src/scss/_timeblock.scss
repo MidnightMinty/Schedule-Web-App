@@ -1,0 +1,28 @@
+.TimeBlock
+{
+    height: 8%;
+}
+
+.TimeRow
+{
+    display: flex;
+    height: 25%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.37);
+}
+
+.TimeRow-time
+{
+    height: 100%;
+    width: 7%;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(95, 95, 95);
+}
+
+.TimeRow-Slot
+{
+    width: 18.6%;
+    height: 100%;
+}

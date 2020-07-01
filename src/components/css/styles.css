@@ -1,0 +1,207 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #E7DFD5;
+}
+
+.Schedule {
+  width: 1300px;
+  max-width: 85%;
+  margin: 5rem auto;
+}
+
+.Schedule-Main {
+  background-color: rgba(255, 255, 255, 0.397);
+  height: 1100px;
+}
+
+.Schedule-Header {
+  height: 45px;
+  background-color: #3B6978;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+.Schedule-Footer {
+  height: 25px;
+  background-color: #3B6978;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.table-break {
+  width: 7%;
+}
+
+.table-days {
+  height: 4%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-color: #84A9AC;
+}
+
+.table-day {
+  font-weight: 300;
+  font-size: 19px;
+  width: 18.6%;
+}
+
+.table-times {
+  position: relative;
+  height: 100%;
+}
+
+.Schedule-Button {
+  cursor: pointer;
+  display: block;
+  width: 10rem;
+  margin: 2rem auto;
+  background-color: #204051;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.Schedule-Button:hover {
+  transform: scale(0.98);
+  background-color: #274e63;
+}
+
+.TimeBlock {
+  height: 8%;
+}
+
+.TimeRow {
+  display: flex;
+  height: 25%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.37);
+}
+
+.TimeRow-time {
+  height: 100%;
+  width: 7%;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #5f5f5f;
+}
+
+.TimeRow-Slot {
+  width: 18.6%;
+  height: 100%;
+}
+
+.CourseBlock {
+  position: absolute;
+  width: 18.6%;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.CourseBlock-header {
+  background-color: #e88bdf;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+  height: 21px;
+}
+
+.CourseBlock-body {
+  background-color: #eda8e7;
+  text-align: center;
+  padding-top: .3rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.modal {
+  color: red;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: white;
+  width: 500px;
+  height: 50vh;
+  font-weight: 100;
+  font-size: 30px;
+  text-align: center;
+  color: black;
+}
+
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  background-color: #3B6978;
+}
+
+.exit-btn {
+  margin-right: 1rem;
+}
+
+.Header-title {
+  margin-left: 8.5rem;
+  margin-top: 1rem;
+}
+
+.input-text {
+  outline: none;
+  border: none;
+  background: none;
+  color: #464646;
+  border-bottom: 1px black solid;
+  font-weight: 100;
+  width: 50%;
+  padding: .25rem;
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 20px;
+}
+
+.CourseForm label {
+  font-size: 20px;
+  color: black;
+  font-weight: 300;
+}
+
+.CourseForm-checkbox {
+  display: flex;
+}
+
+.checkbox {
+  margin: 1rem;
+}
+
+.checkbox label {
+  font-size: 15px;
+}
+
+.checkbox-title {
+  margin-top: 1rem;
+  font-size: 20px;
+  color: black;
+  font-weight: 300;
+}
+/*# sourceMappingURL=styles.css.map */
