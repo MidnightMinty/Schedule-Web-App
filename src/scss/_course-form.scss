@@ -1,6 +1,5 @@
 .modal
-{
-    color: red;
+{   
     position: fixed;
     top: 50%;
     left: 50%;
@@ -8,7 +7,6 @@
     z-index: 10;
     background-color: white;
     width: 500px;
-    height: 50vh;
     font-weight: 100;
     font-size: 30px;
     text-align: center;
@@ -82,3 +80,34 @@
     font-weight: 300;
 }
 
+.form-button{
+    outline: none;
+    border: none;
+}
+
+.CourseForm-timeForm
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.CourseForm-timeForm p
+{
+    color: grey;
+}
+
+.time
+{
+    width: 20%;
+}
+
+.period-select
+{
+    color: white;
+    background-color: rgb(197, 197, 197);
+    margin-left: 1rem;
+    padding:.75rem .5rem;
+    border-radius: 5px;
+    border: none;
+}
