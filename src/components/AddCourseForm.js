@@ -32,8 +32,6 @@ export default function AddCourseForm() {
         
         const startTime = {startHour, startMinute, startPeriod};
         const endTime = {finishHour, finishMinute, endPeriod};
-    
-        const courseData = {days, startTime, endTime, title, color}
 
         if(days.length === 0)
         {
@@ -52,6 +50,8 @@ export default function AddCourseForm() {
             console.log("please enter a color");
             return;
         }
+
+        const courseData = {days, startTime, endTime, title, color, id: uuidv4()}
 
         //TODO add verification for start and end time
 
