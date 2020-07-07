@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 //importing the times
-import {times} from "../Helpers/Times";
+import {times, days} from "../Helpers/Times";
 
 //components
 import TimeBlock from "./TimeBlock";
@@ -10,16 +10,46 @@ import CourseBlock from "./CourseBlock";
 import AddCourseForm from "./AddCourseForm";
 
 //row(hour)(minute)
+import useToggle from '../Hooks/useToggleState';
 
 export default function Schedule() {
+    const [isModalOpen, toggleIsModalOpen] = useToggle();
+
+    const handleAddButton = (e) =>
+    {
+        toggleIsModalOpen();
+    }
+
+    const handleAddNewCourse = (courseData) =>{
+        console.log(courseData);
+        //TODO MAKE SURE THAT THEY DO NOT OVERLAP AND ADD LOCAL STORAGE
+        courseData.days.forEach((day, i) => {
+            ReactDOM.render(<CourseBlock
+                name={courseData.title}
+                totalMinutes ={courseData.endTime.totalEndTime - courseData.startTime.totalStartTime}
+                startHour={ courseData.startTime.startPeriod === "AM" ? +courseData.startTime.startHour -7: +courseData.startTime.startHour+5}
+                startMinutes={courseData.startTime.startMinute}
+                trueStartHour = {courseData.startTime.startHour}
+                startPeriod={courseData.startTime.startPeriod}
+                endHour= {courseData.endTime.finishHour}
+                endMinute= {courseData.endTime.finishMinute}
+                endPeriod = {courseData.endTime.endPeriod}
+                color= {courseData.color}
+             />, document.getElementById(`row1-1col${days(courseData.days[i].name)}`));
+        });
+
+        toggleIsModalOpen();
+    }
+
     useEffect(()=>{
-         ReactDOM.render(<CourseBlock
-            name="CS-325"
-            totalMinutes ={60}
-            startHour={10}
-            startMinutes={"00"}
-            startPeriod={"AM"}
-         />, document.getElementById('row1-1col1'));
+        //  ReactDOM.render(<CourseBlock
+        //     name="CS-325"
+        //     totalMinutes ={60}
+        //     startHour={12-7}
+        //     startMinutes={"00"}
+        //     startPeriod={"AM"}
+        //     trueStartHour={12}
+        //  />, document.getElementById('row1-1col1'));
     },[])
 
     const TimeBlocks = times.map(time => 
@@ -27,11 +57,12 @@ export default function Schedule() {
         hour={time.hour}
         period={time.period}
         row={time.row}
+        key = {time.hour + time.period}
     />);
 
     return (
         <div className="Schedule">
-            <AddCourseForm/>
+            <AddCourseForm  isModalOpen = {isModalOpen} closeModal = {toggleIsModalOpen} addCourse = {handleAddNewCourse}/>
             <div className="Schedule-Header">Schedule</div>
             <div className="Schedule-Main">
                 <div className= "table-days">
@@ -48,7 +79,7 @@ export default function Schedule() {
             </div>
             <div className="Schedule-Footer"/>
 
-            <div className= "Schedule-Button">Add New Course</div>
+            <div className= "Schedule-Button" onClick = {handleAddButton}>Add New Course</div>
         </div>
     )
 }

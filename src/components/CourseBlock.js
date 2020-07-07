@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import chroma from "chroma-js";
 
 export default function CourseBlock(props) 
 {
     //gets the size of course given minutes
-    const {name, startHour, startMinutes,startPeriod,totalMinutes} = props;
+    const {name, startHour, startMinutes,startPeriod,totalMinutes, trueStartHour, endHour, endMinute, endPeriod, color} = props;
+    console.log(startHour);
 
     const style = 
     {
@@ -15,8 +17,8 @@ export default function CourseBlock(props)
 
     return (
         <div className="CourseBlock" style = {style}>
-            <div className= "CourseBlock-header">{name}</div>
-            <div className= "CourseBlock-body">{`${startHour}:${startMinutes}${startPeriod}- 3:00PM`}</div>
+            <div className= "CourseBlock-header" style = {{backgroundColor: chroma(color).darken()}}>{name}</div>
+            <div className= "CourseBlock-body" style = {{backgroundColor: color}}>{`${trueStartHour}:${startMinutes}${startPeriod}- ${endHour}:${endMinute}${endPeriod}`}</div>
         </div>
     )
 }

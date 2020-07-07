@@ -13,3 +13,22 @@ export const times =
     {hour: "6", period: "PM", row: 11},
     {hour: "7", period: "PM", row: 12}
 ]
+
+export const days = (day) =>
+{
+    switch(day)
+    {
+        case "monday": 
+            return 1;
+        case "tuesday": 
+            return 2;
+        case "wenesday":
+            return 3;
+        case "thursday":
+            return 4;
+        case "friday":
+            return 5;
+        default:
+            return 1;
+    }
+}

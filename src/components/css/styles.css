@@ -121,7 +121,6 @@ body {
 }
 
 .CourseBlock-body {
-  background-color: #eda8e7;
   text-align: center;
   padding-top: .3rem;
   border-bottom-left-radius: 5px;
@@ -136,7 +135,8 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: 350ms ease-in-out;
   z-index: 10;
   background-color: white;
   width: 500px;
@@ -144,6 +144,10 @@ body {
   font-size: 30px;
   text-align: center;
   color: black;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .Header {
@@ -157,6 +161,7 @@ body {
 
 .exit-btn {
   margin-right: 1rem;
+  cursor: pointer;
 }
 
 .Header-title {
@@ -229,5 +234,30 @@ body {
   padding: .75rem .5rem;
   border-radius: 5px;
   border: none;
+}
+
+.warning {
+  color: #f74646;
+  font-size: 15px;
+  font-weight: 300;
+  padding-bottom: 1rem;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.473);
+  pointer-events: none;
+}
+
+#overlay.active {
+  pointer-events: all;
+  opacity: 1;
+  transition: 300ms ease-in-out;
+  z-index: 1;
 }
 /*# sourceMappingURL=styles.css.map */

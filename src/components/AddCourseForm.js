@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import useInputState from "../Hooks/useInputState";
 import useCheckBoxState from "../Hooks/useCheckBoxState";
 import useTimeState from "../Hooks/useTimeState";
 import { v4 as uuidv4 } from 'uuid';
 
-export default function AddCourseForm() {
+export default function AddCourseForm(props) {
     const [title, handleTitleChange, resetTitle] = useInputState("");
-    const [color, handleColorChange, resetColor] = useInputState("");
+    const [color, handleColorChange, resetColor] = useInputState("#e6766e");
     const [monday, handleMondayChange] = useCheckBoxState(false);
     const [tuesday, handleTuesdayChange] = useCheckBoxState(false);
     const [wenesday, handleWenesdayChange] = useCheckBoxState(false);
@@ -21,7 +21,23 @@ export default function AddCourseForm() {
     const [finishMinute, handleFinishMinuteChange, resetFinishMinute] = useTimeState("", 59); 
     const [endPeriod, handleEndPeriodChange, resetEndPeriod] = useInputState("AM");
 
+    const warningText = useRef(null);
+    const modal = useRef(null);
+    const overlay = useRef(null);
 
+    if(props.isModalOpen)
+    {
+        modal.current.classList.add("active");
+        overlay.current.classList.add("active");
+    }
+
+    if(!props.isModalOpen)
+    {
+        if(modal.current !== null){
+            modal.current.classList.remove("active");
+            overlay.current.classList.remove("active");
+        }
+    }
 
     const handleSubmit = (e)=>{
         e.preventDefault();
@@ -30,24 +46,65 @@ export default function AddCourseForm() {
 
         days = days.filter(day => day.selected === true);   
         
-        const startTime = {startHour, startMinute, startPeriod};
-        const endTime = {finishHour, finishMinute, endPeriod};
+        let testStartHour = startHour;
+        let testEndHour = finishHour;
+
+        if(startPeriod === "PM")
+        {
+            testStartHour = +testStartHour + 12;
+        }
+
+        if(endPeriod === "PM")
+        {
+            testEndHour = +testEndHour +12;
+        }
+
+        const totalStartTime = (testStartHour * 60) + +startMinute;
+        const totalEndTime = (testEndHour* 60) + +finishMinute;
+
+
+        const startTime = {startHour, startMinute, startPeriod, totalStartTime};
+        const endTime = {finishHour, finishMinute, endPeriod, totalEndTime};
 
         if(days.length === 0)
         {
-            console.log("Please select a day!");
+            warningText.current.innerText = "Please Select A Day!";
             return;
         }
 
         if(title === "")
         {
-            console.log("please enter a title!");
+            warningText.current.innerText = "Please enter a title!";
             return;
         }
         
         if(color === "")
         {
-            console.log("please enter a color");
+            warningText.current.innerText = "Please enter a color!";
+            return;
+        }
+
+        if(startHour ==="" || startMinute === "" || finishHour === "" || finishMinute === "")
+        {
+            warningText.current.innerText = "Please enter a time!";
+            return;
+        }
+
+        if(totalStartTime >= totalEndTime)
+        {
+            warningText.current.innerText = "End time must be after start time!";
+            return; 
+        }
+
+        if(totalEndTime - totalStartTime  < 30)
+        {
+            warningText.current.innerText = "The Course should be atleast 30 minutes long";
+            return;
+        }
+
+        if(totalStartTime < 480 || totalEndTime > 1185)
+        {
+            warningText.current.innerText = "time must be between 8am and 7:45pm!";
             return;
         }
 
@@ -63,7 +120,14 @@ export default function AddCourseForm() {
         resetFinishHour();
         resetFinishMinute();
         resetEndPeriod();
-        console.log(courseData);
+        warningText.current.innerText = "";
+
+        props.addCourse(courseData);
+        //console.log(courseData);
+    }
+
+    const handleExit = (e) =>{
+        props.closeModal();
     }
 
     const hours = [];
@@ -79,10 +143,10 @@ export default function AddCourseForm() {
 
     return (
         <div className="AddCourseForm" id="modal">
-            <div className = "modal">
+            <div className = "modal" ref={modal}>
                 <div className="Header">
                     <div className= "Header-title">Add New Course!</div>
-                    <div className="exit-btn">&times;</div>
+                    <div className="exit-btn" onClick = {handleExit}>&times;</div>
                 </div>
 
                 <form className = "CourseForm" onSubmit={handleSubmit}>
@@ -167,8 +231,9 @@ export default function AddCourseForm() {
                     <button className= "Schedule-Button form-button">Submit</button>
 
                 </form>
+                <h1 className = "warning" ref={warningText}/>   
             </div>
-            <div id = "overlay"></div>
+            <div id = "overlay" ref={overlay}></div>
         </div>
     )
 }
