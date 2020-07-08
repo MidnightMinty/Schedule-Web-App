@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 
 //importing the times
@@ -14,6 +14,8 @@ import useToggle from '../Hooks/useToggleState';
 
 export default function Schedule() {
     const [isModalOpen, toggleIsModalOpen] = useToggle();
+    const [isTimeTaken, setIsTimeTaken] = useState();
+    const [courses, setCourses] = useState([]);
 
     const handleAddButton = (e) =>
     {
@@ -21,24 +23,52 @@ export default function Schedule() {
     }
 
     const handleAddNewCourse = (courseData) =>{
-        console.log(courseData);
-        //TODO MAKE SURE THAT THEY DO NOT OVERLAP AND ADD LOCAL STORAGE
+        let courseList = [];
+        let timeTaken = false;
+
+        const startTime =  courseData.startTime;
+        const endTime = courseData.endTime;
+
+        const {totalStartTime, startPeriod, startHour, startMinute} = startTime;
+        const {totalEndTime, finishHour, finishMinute, endPeriod} = endTime;
+
+        //TODO ADD LOCAL STORAGE and make responsive and fix that a course can be larger and still be placed, add delete button;
         courseData.days.forEach((day, i) => {
-            ReactDOM.render(<CourseBlock
-                name={courseData.title}
-                totalMinutes ={courseData.endTime.totalEndTime - courseData.startTime.totalStartTime}
-                startHour={ courseData.startTime.startPeriod === "AM" ? +courseData.startTime.startHour -7: +courseData.startTime.startHour+5}
-                startMinutes={courseData.startTime.startMinute}
-                trueStartHour = {courseData.startTime.startHour}
-                startPeriod={courseData.startTime.startPeriod}
-                endHour= {courseData.endTime.finishHour}
-                endMinute= {courseData.endTime.finishMinute}
-                endPeriod = {courseData.endTime.endPeriod}
-                color= {courseData.color}
-             />, document.getElementById(`row1-1col${days(courseData.days[i].name)}`));
+
+            //Check if time slot of course is already occupied
+            courses.forEach(course =>{
+                //if break than add = after each <>
+                if(((totalEndTime >= course.startTime.totalStartTime 
+                && totalEndTime <= course.endTime.totalEndTime)
+                || (totalStartTime <= course.endTime.totalEndTime
+                && totalStartTime >= course.startTime.totalStartTime))
+                && days(courseData.days[i].name) === course.dayNum)
+                {
+                    setIsTimeTaken(true);
+                    timeTaken = true;
+                }
+            });
+
+            if(!timeTaken){
+                ReactDOM.render(<CourseBlock
+                    name={courseData.title}
+                    totalMinutes ={totalEndTime - totalStartTime}
+                    startHour={startPeriod === "AM" ? +startHour -7: +startHour+5}
+                    startMinutes={startMinute}
+                    trueStartHour = {startHour}
+                    startPeriod={startPeriod}
+                    endHour= {finishHour}
+                    endMinute= {finishMinute}
+                    endPeriod = {endPeriod}
+                    color= {courseData.color}
+                />, document.getElementById(`row${startPeriod === "AM" ? +startHour -7: +startHour+5}-${Math.floor(startMinute/15)+1}col${days(courseData.days[i].name)}`));
+                
+                courseList.push({...courseData, dayNum: days(courseData.days[i].name)});
+                toggleIsModalOpen();
+            }
         });
 
-        toggleIsModalOpen();
+        setCourses([...courses, ...courseList]);
     }
 
     useEffect(()=>{
@@ -49,6 +79,7 @@ export default function Schedule() {
         //     startMinutes={"00"}
         //     startPeriod={"AM"}
         //     trueStartHour={12}
+        //     color="#32a852"
         //  />, document.getElementById('row1-1col1'));
     },[])
 
@@ -62,13 +93,19 @@ export default function Schedule() {
 
     return (
         <div className="Schedule">
-            <AddCourseForm  isModalOpen = {isModalOpen} closeModal = {toggleIsModalOpen} addCourse = {handleAddNewCourse}/>
+            <AddCourseForm  
+            isModalOpen = {isModalOpen} 
+            closeModal = {toggleIsModalOpen} 
+            addCourse = {handleAddNewCourse}
+            isTimeTaken={isTimeTaken}
+            toggleIsTimeTaken={() => setIsTimeTaken(false)}
+            />
             <div className="Schedule-Header">Schedule</div>
             <div className="Schedule-Main">
                 <div className= "table-days">
                     <div className= "table-break"/>
-                    <div className= "table-day">Monday</div>
-                    <div className= "table-day">Tuesday</div>
+                    <div className= "table-day" id = "col1">Monday</div>
+                    <div className= "table-day" id = "col2">Tuesday</div>
                     <div className= "table-day">Thursday</div>
                     <div className= "table-day">Wenesday</div>
                     <div className= "table-day">Friday</div>

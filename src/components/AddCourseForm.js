@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function AddCourseForm(props) {
     const [title, handleTitleChange, resetTitle] = useInputState("");
-    const [color, handleColorChange, resetColor] = useInputState("#e6766e");
+    const [color, handleColorChange] = useInputState("#e6766e");
     const [monday, handleMondayChange] = useCheckBoxState(false);
     const [tuesday, handleTuesdayChange] = useCheckBoxState(false);
     const [wenesday, handleWenesdayChange] = useCheckBoxState(false);
@@ -15,11 +15,11 @@ export default function AddCourseForm(props) {
 
     const [startHour, handleStartHourChange, resetStartHour] = useTimeState("", 12); 
     const [startMinute, handleStartMinuteChange, resetStartMinute] = useTimeState("", 59); 
-    const [startPeriod, handleStartPeriodChange, resetStartPeriod] = useInputState("AM");
+    const [startPeriod, handleStartPeriodChange] = useInputState("AM");
 
     const [finishHour, handleFinishHourChange, resetFinishHour] = useTimeState("", 12); 
     const [finishMinute, handleFinishMinuteChange, resetFinishMinute] = useTimeState("", 59); 
-    const [endPeriod, handleEndPeriodChange, resetEndPeriod] = useInputState("AM");
+    const [endPeriod, handleEndPeriodChange] = useInputState("AM");
 
     const warningText = useRef(null);
     const modal = useRef(null);
@@ -37,6 +37,11 @@ export default function AddCourseForm(props) {
             modal.current.classList.remove("active");
             overlay.current.classList.remove("active");
         }
+    }
+
+    if(props.isTimeTaken)
+    {
+        warningText.current.innerText = "Time entered is already taken!";
     }
 
     const handleSubmit = (e)=>{
@@ -112,14 +117,12 @@ export default function AddCourseForm(props) {
 
         //TODO add verification for start and end time
 
-        resetColor();
         resetTitle();
         resetStartHour();
         resetStartMinute();
-        resetStartPeriod();
         resetFinishHour();
         resetFinishMinute();
-        resetEndPeriod();
+        props.toggleIsTimeTaken();
         warningText.current.innerText = "";
 
         props.addCourse(courseData);
@@ -231,7 +234,7 @@ export default function AddCourseForm(props) {
                     <button className= "Schedule-Button form-button">Submit</button>
 
                 </form>
-                <h1 className = "warning" ref={warningText}/>   
+                <div className = "warning" ref={warningText}/>   
             </div>
             <div id = "overlay" ref={overlay}></div>
         </div>

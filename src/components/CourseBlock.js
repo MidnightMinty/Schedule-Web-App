@@ -5,7 +5,6 @@ export default function CourseBlock(props)
 {
     //gets the size of course given minutes
     const {name, startHour, startMinutes,startPeriod,totalMinutes, trueStartHour, endHour, endMinute, endPeriod, color} = props;
-    console.log(startHour);
 
     const style = 
     {
