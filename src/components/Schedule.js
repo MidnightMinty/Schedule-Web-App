@@ -32,7 +32,7 @@ export default function Schedule() {
         const {totalStartTime, startPeriod, startHour, startMinute} = startTime;
         const {totalEndTime, finishHour, finishMinute, endPeriod} = endTime;
 
-        //TODO ADD LOCAL STORAGE and make responsive and fix that a course can be larger and still be placed, add delete button;
+        //TODO ADD LOCAL STORAGE and make responsive, fix the fact that when rerender happens the blocks are still there
         courseData.days.forEach((day, i) => {
 
             //Check if time slot of course is already occupied
@@ -41,7 +41,9 @@ export default function Schedule() {
                 if(((totalEndTime >= course.startTime.totalStartTime 
                 && totalEndTime <= course.endTime.totalEndTime)
                 || (totalStartTime <= course.endTime.totalEndTime
-                && totalStartTime >= course.startTime.totalStartTime))
+                && totalStartTime >= course.startTime.totalStartTime)
+                || (course.startTime.totalStartTime <= totalEndTime 
+                && course.startTime.totalStartTime >= totalStartTime))
                 && days(courseData.days[i].name) === course.dayNum)
                 {
                     setIsTimeTaken(true);
@@ -61,6 +63,8 @@ export default function Schedule() {
                     endMinute= {finishMinute}
                     endPeriod = {endPeriod}
                     color= {courseData.color}
+                    id= {courseData.id}
+                    deleteCourse={deleteCourse}
                 />, document.getElementById(`row${startPeriod === "AM" ? +startHour -7: +startHour+5}-${Math.floor(startMinute/15)+1}col${days(courseData.days[i].name)}`));
                 
                 courseList.push({...courseData, dayNum: days(courseData.days[i].name)});
@@ -69,6 +73,10 @@ export default function Schedule() {
         });
 
         setCourses([...courses, ...courseList]);
+    }
+
+    const deleteCourse = (id) =>{
+        setCourses(courses.filter(course => course.id !== id));
     }
 
     useEffect(()=>{

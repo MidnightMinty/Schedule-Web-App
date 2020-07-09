@@ -159,7 +159,7 @@ export default function AddCourseForm(props) {
                         onChange={handleTitleChange}   
                     />
                     <br/>
-                    <label htmlFor="color">Color</label><br/>
+                    <label htmlFor="color">Color(Hex)</label><br/>
                     <input type="text" className="input-text" name="color" placeholder="#4287f5"
                         value={color}
                         onChange={handleColorChange}   

@@ -14,10 +14,31 @@ export default function CourseBlock(props)
         top: `${((((startHour-1)*60) + (+startMinutes)) * .1332)}%`,
     }
 
+    const getColor = (color) =>{
+        let newColors = {first: "#32a852", second: chroma("#32a852").darken()};
+        try
+        {
+            newColors = {first: color, second: chroma(color).darken()};
+        }
+        catch(e)
+        {
+            console.log("Wrong color entered");
+        }
+
+        return newColors;
+    }
+
+    const handleDelete = (e) =>{
+        props.deleteCourse(props.id);
+    }
+
     return (
         <div className="CourseBlock" style = {style}>
-            <div className= "CourseBlock-header" style = {{backgroundColor: chroma(color).darken()}}>{name}</div>
-            <div className= "CourseBlock-body" style = {{backgroundColor: color}}>{`${trueStartHour}:${startMinutes}${startPeriod}- ${endHour}:${endMinute}${endPeriod}`}</div>
+            <div className= "CourseBlock-header" style = {{backgroundColor: getColor(color).second}}>
+                <div style={{marginLeft:"1.5rem"}}>{name}</div>
+                <div className="header-delete" onClick = {handleDelete}>&times;</div>
+            </div>
+            <div className= "CourseBlock-body" style = {{backgroundColor: getColor(color).first}}>{`${trueStartHour}:${startMinutes}${startPeriod}- ${endHour}:${endMinute}${endPeriod}`}</div>
         </div>
     )
 }

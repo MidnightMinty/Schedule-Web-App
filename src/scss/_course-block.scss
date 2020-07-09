@@ -8,13 +8,20 @@
 
 .CourseBlock-header
 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #e88bdf;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     text-align: center;
     height: 21px;
 }
-
+.header-delete
+{
+    margin-left: 1rem;
+    cursor: pointer;
+}
 .CourseBlock-body
 {
     text-align: center;
