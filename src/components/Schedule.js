@@ -13,9 +13,10 @@ import AddCourseForm from "./AddCourseForm";
 import useToggle from '../Hooks/useToggleState';
 
 export default function Schedule() {
+    const initialCourses = JSON.parse(window.localStorage.getItem("courses") || "[]")
     const [isModalOpen, toggleIsModalOpen] = useToggle();
     const [isTimeTaken, setIsTimeTaken] = useState();
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState(initialCourses);
 
     const handleAddButton = (e) =>
     {
@@ -29,10 +30,10 @@ export default function Schedule() {
         const startTime =  courseData.startTime;
         const endTime = courseData.endTime;
 
-        const {totalStartTime, startPeriod, startHour, startMinute} = startTime;
-        const {totalEndTime, finishHour, finishMinute, endPeriod} = endTime;
+        const {totalStartTime} = startTime;
+        const {totalEndTime} = endTime;
 
-        //TODO ADD LOCAL STORAGE and make responsive, fix the fact that when rerender happens the blocks are still there
+        //TODO make responsive
         courseData.days.forEach((day, i) => {
 
             //Check if time slot of course is already occupied
@@ -52,21 +53,6 @@ export default function Schedule() {
             });
 
             if(!timeTaken){
-                ReactDOM.render(<CourseBlock
-                    name={courseData.title}
-                    totalMinutes ={totalEndTime - totalStartTime}
-                    startHour={startPeriod === "AM" ? +startHour -7: +startHour+5}
-                    startMinutes={startMinute}
-                    trueStartHour = {startHour}
-                    startPeriod={startPeriod}
-                    endHour= {finishHour}
-                    endMinute= {finishMinute}
-                    endPeriod = {endPeriod}
-                    color= {courseData.color}
-                    id= {courseData.id}
-                    deleteCourse={deleteCourse}
-                />, document.getElementById(`row${startPeriod === "AM" ? +startHour -7: +startHour+5}-${Math.floor(startMinute/15)+1}col${days(courseData.days[i].name)}`));
-                
                 courseList.push({...courseData, dayNum: days(courseData.days[i].name)});
                 toggleIsModalOpen();
             }
@@ -76,20 +62,44 @@ export default function Schedule() {
     }
 
     const deleteCourse = (id) =>{
-        setCourses(courses.filter(course => course.id !== id));
+
+        setCourses(courses.filter(course => {
+            const startTime =  course.startTime;
+            const {startPeriod, startHour, startMinute} = startTime;
+            if(course.id === id)
+            {
+                ReactDOM.unmountComponentAtNode(document.getElementById(`row${startPeriod === "AM" ? +startHour -7: +startHour+5}-${Math.floor(startMinute/15)+1}col${course.dayNum}`));
+            } 
+            return course.id !== id
+        }));
     }
 
     useEffect(()=>{
-        //  ReactDOM.render(<CourseBlock
-        //     name="CS-325"
-        //     totalMinutes ={60}
-        //     startHour={12-7}
-        //     startMinutes={"00"}
-        //     startPeriod={"AM"}
-        //     trueStartHour={12}
-        //     color="#32a852"
-        //  />, document.getElementById('row1-1col1'));
-    },[])
+        window.localStorage.setItem("courses", JSON.stringify(courses));
+
+        courses.forEach((course,i) =>{
+            const startTime =  course.startTime;
+            const endTime = course.endTime;
+    
+            const {totalStartTime, startPeriod, startHour, startMinute} = startTime;
+            const {totalEndTime, finishHour, finishMinute, endPeriod} = endTime;
+
+            ReactDOM.render(<CourseBlock
+                name={course.title}
+                totalMinutes ={totalEndTime - totalStartTime}
+                startHour={startPeriod === "AM" ? +startHour -7: +startHour+5}
+                startMinutes={startMinute}
+                trueStartHour = {startHour}
+                startPeriod={startPeriod}
+                endHour= {finishHour}
+                endMinute= {finishMinute}
+                endPeriod = {endPeriod}
+                color= {course.color}
+                id= {course.id}
+                deleteCourse={deleteCourse}
+            />, document.getElementById(`row${startPeriod === "AM" ? +startHour -7: +startHour+5}-${Math.floor(startMinute/15)+1}col${course.dayNum}`));
+        });
+    }, [courses]);
 
     const TimeBlocks = times.map(time => 
     <TimeBlock

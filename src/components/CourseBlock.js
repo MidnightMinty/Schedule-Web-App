@@ -21,9 +21,7 @@ export default function CourseBlock(props)
             newColors = {first: color, second: chroma(color).darken()};
         }
         catch(e)
-        {
-            console.log("Wrong color entered");
-        }
+        {}
 
         return newColors;
     }
